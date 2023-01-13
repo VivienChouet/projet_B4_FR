@@ -621,7 +621,7 @@
                         <inherited>false</inherited>
                         <reports>
                             <!-- goal "report-only" afin de ne pas relancer les tests unitaires
-                                 car normalement ils ont été lancés par la phase compile -->
+                                    car normalement ils ont été lancés par la phase compile -->
                             <report>report-only</report>
                         </reports>
                         <configuration>
