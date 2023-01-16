@@ -154,8 +154,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             }
 
 
-
-
     /**
      * Vérifie la Règle de compta N°5 : Format et contenu de la référence
      *
