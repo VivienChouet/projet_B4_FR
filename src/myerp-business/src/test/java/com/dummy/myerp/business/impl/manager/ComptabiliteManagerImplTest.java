@@ -66,6 +66,7 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.setJournal(new JournalComptable("TS", "Test"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Test");
+        vEcritureComptable.setReference("TS-2023/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
@@ -93,6 +94,7 @@ public class ComptabiliteManagerImplTest {
         vEcritureComptable.setJournal(new JournalComptable("AC", "Test"));
         vEcritureComptable.setDate(new Date());
         vEcritureComptable.setLibelle("Test");
+        vEcritureComptable.setReference("TS-2023/00001");
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),
                 null));
@@ -111,31 +113,16 @@ public class ComptabiliteManagerImplTest {
             vEcritureComptable.setJournal(new JournalComptable("TS", "Test"));
             vEcritureComptable.setDate(new Date());
             vEcritureComptable.setLibelle("Test");
+            vEcritureComptable.setReference("TS-2023/00001");
             vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                     null, new BigDecimal(1234), null));
             vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                     null, null,
                     new BigDecimal(4321)));
-            comptabiliteManager.checkEcritureComptableUnitRG2(vEcritureComptable);
+            comptabiliteManager.checkEcritureComptableUnit(vEcritureComptable);
         });
     }
 
-    @Test
-    public void checkEcritureComptableUnitRG2Ok() throws Exception {
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("TS", "Test"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Test");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, null,
-                new BigDecimal(123)));
-        comptabiliteManager.checkEcritureComptableUnitRG2(vEcritureComptable);
-
-    }
 
     @Test
     public void checkEcritureComptableUnitRG3Nok() {
@@ -146,27 +133,12 @@ public class ComptabiliteManagerImplTest {
             vEcritureComptable.setJournal(new JournalComptable("TS", "Test"));
             vEcritureComptable.setDate(new Date());
             vEcritureComptable.setLibelle("test");
+            vEcritureComptable.setReference("TS-2023/00001");
             vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                     null, new BigDecimal(123),
                     null));
-            comptabiliteManager.checkEcritureComptableUnitRG3(vEcritureComptable);
+            comptabiliteManager.checkEcritureComptableUnit(vEcritureComptable);
         });
-    }
-
-    @Test
-    public void checkEcritureComptableUnitRG3Ok() throws Exception {
-        EcritureComptable vEcritureComptable;
-        vEcritureComptable = new EcritureComptable();
-        vEcritureComptable.setJournal(new JournalComptable("TS", "Test"));
-        vEcritureComptable.setDate(new Date());
-        vEcritureComptable.setLibelle("Test");
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
-                null, new BigDecimal(123),
-                null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
-                null,
-                null, new BigDecimal(123)));
-        comptabiliteManager.checkEcritureComptableUnitRG3(vEcritureComptable);
     }
 
     @Test
@@ -268,7 +240,7 @@ public class ComptabiliteManagerImplTest {
             sequenceEcritureComptable.setAnnee(2023);
             sequenceEcritureComptable.setDerniereValeur(00001);
             //Mock
-            System.out.println(vEcritureComptable);
+
             lenient().when(comptabiliteDaoMock.getEcritureComptableByRef("TS-2023/00001")).thenReturn(vEcritureComptable);
             //Assert
             comptabiliteManager.checkEcritureComptable(vEcritureComptable);
@@ -277,7 +249,6 @@ public class ComptabiliteManagerImplTest {
     public void testCheckEcritureComptableContextWithNewRef() throws NotFoundException {
         given(comptabiliteDaoMock.getEcritureComptableByRef(anyString())).willReturn(vEcritureComptable);
         FunctionalException functionalException = assertThrows(FunctionalException .class, () -> {
-           System.out.println(vEcritureComptable);
            comptabiliteManager.checkEcritureComptableContext(vEcritureComptable);
        });
         Assertions.assertEquals(functionalException.getMessage(),"Une autre écriture comptable existe déjà avec la même référence.");
